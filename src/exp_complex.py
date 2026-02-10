@@ -21,7 +21,7 @@ class ExpComplex:
         self.phi = phi
 
     def __str__(self) -> str:
-        return f"{self.r} * e^( i * {self.phi} )"
+        return f"{self.r:.4f} * e^( i * {self.phi:.4f} )"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -69,7 +69,7 @@ class ExpComplex:
         x1, y1 = self.to_cartesian()
 
         if isinstance(other, (float, int)):
-            x_new = x1 - other
+            x_new = x1 + other
             y_new = y1
 
             return ExpComplex.from_cartesian(x_new, y_new)
