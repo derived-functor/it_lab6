@@ -37,6 +37,9 @@ class ExpComplex:
 
         return ExpComplex(r_new, phi_new)
 
+    def __rmul__(self, other: ExpComplex | Real) -> ExpComplex:
+        return self.__mul__(other)
+
     def __truediv__(self, other: ExpComplex | Real) -> ExpComplex:
         """Default complex number division
 
