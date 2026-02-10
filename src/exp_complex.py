@@ -23,6 +23,9 @@ class ExpComplex:
     def __str__(self) -> str:
         return f"{self.r} * e^( i * {self.phi} )"
 
+    def __repr__(self) -> str:
+        return self.__str__()
+
     def __mul__(self, other: ExpComplex | Real) -> ExpComplex:
         """Default complex number multiplication"""
 
