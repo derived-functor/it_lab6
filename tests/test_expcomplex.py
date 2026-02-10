@@ -13,7 +13,7 @@ class TestExpComplex:
     def test_str_representation(self):
         """Проверка строкового вывода"""
         z = ExpComplex(2.0, 1.0)
-        assert str(z) == "2.0 * e^( i * 1.0 )"
+        assert str(z) == "2.0000 * e^( i * 1.0000 )"
 
     def test_to_cartesian(self):
         """Проверка перевода в декартову форму"""

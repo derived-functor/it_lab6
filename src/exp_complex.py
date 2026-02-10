@@ -1,5 +1,6 @@
 from __future__ import annotations
-from math import cos, sin, sqrt, atan2, pi
+
+from math import atan2, cos, sin, sqrt
 
 Real = float | int
 
@@ -16,12 +17,12 @@ class ExpComplex:
 
     ZERO_PRECISION = 1e-8
 
-    def __init__(self, r: float, phi: float):
+    def __init__(self, r: float, phi: float) -> None:
         self.r = r
         self.phi = phi
 
     def __str__(self) -> str:
-        return f"{self.r:.4f} * e^( i * {self.phi:.4f} )"
+        return f'{self.r:.4f} * e^( i * {self.phi:.4f} )'
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -29,8 +30,7 @@ class ExpComplex:
     def __mul__(self, other: ExpComplex | Real) -> ExpComplex:
         """Default complex number multiplication"""
 
-        if isinstance(other, (float, int)):
-            return ExpComplex(self.r * other, self.phi)
+        other = ExpComplex._to_complex(other)
 
         r_new = self.r * other.r
         phi_new = self.phi + other.phi
@@ -47,13 +47,10 @@ class ExpComplex:
             of second argument is (almost) zero.
         """
 
-        if isinstance(other, (float, int)):
-            if abs(other) < self.ZERO_PRECISION:
-                raise ZeroDivisionError("Modulus cannot be equal to zero")
-            return ExpComplex(self.r / other, self.phi)
+        other = ExpComplex._to_complex(other)
 
         if abs(other.r) < self.ZERO_PRECISION:
-            raise ZeroDivisionError("Modulus cannot be equal to zero")
+            raise ZeroDivisionError('Modulus cannot be equal to zero')
 
         r_new = self.r / other.r
         phi_new = self.phi - other.phi
@@ -66,13 +63,10 @@ class ExpComplex:
         To perform addition we first transform complex numbers to algebraic
         form and then return new number in exponential form.
         """
+
+        other = ExpComplex._to_complex(other)
+
         x1, y1 = self.to_cartesian()
-
-        if isinstance(other, (float, int)):
-            x_new = x1 + other
-            y_new = y1
-
-            return ExpComplex.from_cartesian(x_new, y_new)
 
         x2, y2 = other.to_cartesian()
 
@@ -92,13 +86,9 @@ class ExpComplex:
         form and then return new number in exponential form.
         """
 
+        other = ExpComplex._to_complex(other)
+
         x1, y1 = self.to_cartesian()
-
-        if isinstance(other, (float, int)):
-            x_new = x1 - other
-            y_new = y1
-
-            return ExpComplex.from_cartesian(x_new, y_new)
 
         x2, y2 = other.to_cartesian()
 
@@ -122,3 +112,12 @@ class ExpComplex:
         r = sqrt(x**2 + y**2)
 
         return cls(r, phi)
+
+    @staticmethod
+    def _to_complex(value: ExpComplex | Real) -> ExpComplex:
+        """Convert real number to ExpComplex"""
+        return (
+            value
+            if isinstance(value, ExpComplex)
+            else ExpComplex.from_cartesian(value, 0)
+        )
